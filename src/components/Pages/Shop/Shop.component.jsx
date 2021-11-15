@@ -1,27 +1,18 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Route } from "react-router";
 import { fetchCollectionsStart } from "../../../redux/actions/shop/shop.actions";
-// import { fetchCollectionsStart } from "../../../redux/saga/shop.saga";
-// import { selectIsCollectionLoaded } from "../../../utils/Selectors/shop.selectors";
 import CollectionOverviewContainer from "../../Collection-overview/Collection-overview.container";
 import { CollectionPageContainer } from "../Collection/Collection.container";
 
 
 
-class ShopPage extends Component {
+const ShopPage = ({fetchCollectionsStart, match}) => {
 
-  UNSAFE_componentWillMount(){
-
-  }
-
-  componentDidMount() {
-    const { fetchCollectionsStart } = this.props
+  useEffect(() => {
     fetchCollectionsStart()
-  }
+  },[fetchCollectionsStart])
 
-  render() {
-    const { match } = this.props;
     return (
       <div className="shop-page">
         <Route
@@ -36,7 +27,6 @@ class ShopPage extends Component {
       </div>
     );
   }
-}
 
 
 const mapDispatchToProps = (dispatch) => ({
