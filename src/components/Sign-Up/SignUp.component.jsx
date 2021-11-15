@@ -1,26 +1,22 @@
-import React, { Component } from 'react'
+import React, { Component, useState, useEffect } from 'react'
 import { connect } from 'react-redux';
 import { signUpStart } from '../../redux/actions/user/user.action';
 import CustomButton from '../Custom-Button/Custom-Button.component'
 import FormInput from '../Form-Input/Form-Input.component'
 import './SignUp.styles.scss';
 
-class SignUp extends Component{
-    constructor(){
-        super();
+const SignUp = ({signUpStart}) => {
 
-        this.state = {
-            displayName: '',
-            email: '',
-            password: '',
-            confirmPassword: ''
-        }
-    }
+    const [credentails, setCredentials] = useState({
+        displayName: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+    })
+    const {displayName, email, password, confirmPassword} = credentails
 
-    handleSubmit = async(event) => {
+    const handleSubmit = async(event) => {
         event.preventDefault()
-        const {signUpStart} = this.props
-        const {displayName, email, password, confirmPassword} = this.state
 
         if(password !== confirmPassword){
             alert('Password not match')
@@ -31,14 +27,12 @@ class SignUp extends Component{
 
     }
 
-    handleChange = event => {
+    const handleChange = event => {
         const {name, value} = event.target;
 
-        this.setState({[name]: value})
+        setCredentials({...credentails,[name]: value})
     }
 
-    render(){
-        const {displayName, email, password, confirmPassword} = this.state
         return(
             <div className="sign-up">
                 <h2 className="title">I do not have a account </h2>
@@ -48,7 +42,7 @@ class SignUp extends Component{
                         type="text"
                         name="displayName"
                         value={displayName}
-                        onChange={this.handleChange}
+                        onChange={handleChange}
                         label="Display Name"
                         required
                     />
@@ -57,7 +51,7 @@ class SignUp extends Component{
                         type="text"
                         name="email"
                         value={email}
-                        onChange={this.handleChange}
+                        onChange={handleChange}
                         label="Email"
                         required
                     />
@@ -65,7 +59,7 @@ class SignUp extends Component{
                         type="password"
                         name="password"
                         value={password}
-                        onChange={this.handleChange}
+                        onChange={handleChange}
                         label="Password"
                         required
                     />
@@ -73,18 +67,17 @@ class SignUp extends Component{
                         type="password"
                         name="confirmPassword"
                         value={confirmPassword}
-                        onChange={this.handleChange}
+                        onChange={handleChange}
                         label="Confirm Password"
                         required
                     />
 
-                    <CustomButton onClick={this.handleSubmit} type="submit">SIGN UP</CustomButton>
+                    <CustomButton onClick={handleSubmit} type="submit">SIGN UP</CustomButton>
 
                 </form>
             </div>
         )
     }
-}
 
 const mapsDispatchToProps = dispatch => ({
     signUpStart:(userCredential) => dispatch(signUpStart(userCredential))
