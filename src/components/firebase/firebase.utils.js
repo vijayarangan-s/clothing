@@ -40,18 +40,7 @@ const config =  {
 
   firebase.initializeApp(config)
 
-  // export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
-  //   const collectionRef = firestore.collection(collectionKey);
-
-  //   const batch = firestore.batch();
-  //   objectsToAdd.forEach(obj => {
-  //     const newDocRef = collectionRef.doc()
-  //     batch.set(newDocRef, obj)
-  //   });
-
-  //   return await batch.commit()
-  // }
-  
+ 
   export const convertCollectionsSnapshotToMap = (collections) => {
     const transformedCollection = collections.docs.map(doc => {
       const {title, items} = doc.data()
@@ -68,6 +57,15 @@ const config =  {
       acc[coll.title.toLowerCase()] = coll;
       return acc;
     }, {})
+  }
+
+  export const getCurrentUser = () => {
+    return new Promise((resolve, reject) => {
+      const unsubscribe = auth.onAuthStateChanged(userAuth => {
+        unsubscribe();
+        resolve(userAuth)
+      }, reject)
+    })
   }
 
   export const auth = firebase.auth();
